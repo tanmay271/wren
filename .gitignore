@@ -1,0 +1,36 @@
+# Secrets — never commit
+.env
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ChromaDB persistent data (not used, but guard anyway)
+chroma_db/
+
+# Uploaded PDFs — keep out of source control
+data/*.pdf
+*.pdf
+
+.claude/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
