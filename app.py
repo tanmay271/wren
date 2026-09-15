@@ -5,120 +5,179 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+ACCENT   = "#D2603A"   # terracotta
+INK      = "#2B2420"   # warm near-black
+PAPER    = "#FBF5EC"   # cream page background
+CARD     = "#FFFFFF"
+NEST     = "#241E1A"   # dark warm brown, sidebar
+CREAM    = "#F5EAD9"
+DIM      = "#8A7A6B"
+
+# A simple two-curve bird-in-flight mark — Wren's logomark.
+BIRD_SVG = f"""
+<svg width="26" height="16" viewBox="0 0 32 20" fill="none" style="vertical-align:-3px;">
+  <path d="M2 15C6 6 11 4 16 10C21 4 26 6 30 15C25 10.5 21 11 16 16C11 11 7 10.5 2 15Z" fill="{ACCENT}"/>
+</svg>
+"""
+
 BRAND_LOGO_HTML = (
-    "<span style='font-weight:900; font-size:20px; color:#06B6D4;'>&#9670;</span>"
-    "<span style='font-weight:800; font-size:16px; color:#fff; margin-left:8px;'>Atlas Assist</span>"
+    f"{BIRD_SVG}"
+    f"<span style='font-family:\"Baloo 2\",cursive; font-weight:700; font-size:21px; color:{CREAM}; margin-left:9px;'>Wren</span>"
 )
 
 st.set_page_config(
-    page_title="Atlas Assist — AI HR Policy Assistant",
-    page_icon="💼",
+    page_title="Wren — Ask Your Handbook Anything",
+    page_icon="🐦",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ── Atlas Assist Brand CSS ────────────────────────────────────────────────────
-st.markdown("""
+# ── Wren Brand CSS ─────────────────────────────────────────────────────────────
+st.markdown(f"""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+html, body, [class*="css"] {{ font-family: 'Inter', sans-serif; }}
+
 /* Layout */
-.block-container { padding-top: 0.75rem !important; max-width: 1100px; }
+.stApp, [data-testid="stAppViewContainer"] {{ background-color: {PAPER} !important; }}
+[data-testid="stHeader"] {{ background: transparent !important; }}
+.block-container {{ padding-top: 1.25rem !important; max-width: 1100px; }}
+h1, h2, h3 {{ font-family: 'Baloo 2', cursive !important; color: {INK} !important; }}
+p, li, span, label, div {{ color: {INK}; }}
+hr {{ border-color: rgba(43,36,32,0.12) !important; }}
 
 /* ── Header ── */
-.brand-header {
+.brand-header {{
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    padding: 1rem 0.25rem 1rem;
-    border-bottom: 3px solid #06B6D4;
+    gap: 1.1rem;
+    padding: 1.1rem 1.4rem;
+    background: {CARD};
+    border: 1px solid rgba(43,36,32,0.08);
+    border-radius: 16px;
     margin-bottom: 1.75rem;
-}
-.brand-header-title h1 {
+    box-shadow: 0 2px 14px rgba(43,36,32,0.05);
+}}
+.brand-header-icon {{
+    font-size: 34px;
+    background: #FBEADF;
+    border-radius: 12px;
+    width: 58px; height: 58px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}}
+.brand-header-title h1 {{
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #1A1A1A;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     line-height: 1.25;
-}
-.brand-header-title p { margin: 0.2rem 0 0; font-size: 0.84rem; color: #777; }
+}}
+.brand-header-title p {{ margin: 0.25rem 0 0; font-size: 0.86rem; color: {DIM}; }}
 
-/* ── Sidebar ── */
-[data-testid="stSidebar"] { background-color: #0B1120 !important; }
+/* ── Sidebar (the nest) ── */
+[data-testid="stSidebar"] {{ background-color: {NEST} !important; }}
 [data-testid="stSidebar"] .stMarkdown p,
 [data-testid="stSidebar"] .stMarkdown li,
 [data-testid="stSidebar"] label,
-[data-testid="stSidebar"] .stCaption span { color: #C8D4DC !important; }
+[data-testid="stSidebar"] .stCaption span {{ color: {CREAM} !important; opacity: 0.85; }}
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 { color: #FFFFFF !important; }
-[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.12) !important; }
-[data-testid="stSidebar"] .stButton > button {
-    background: rgba(255,255,255,0.07) !important;
-    color: #FFFFFF !important;
-    border: 1px solid rgba(255,255,255,0.18) !important;
-    border-radius: 6px !important;
-    font-weight: 500 !important;
+[data-testid="stSidebar"] h3 {{ color: {CREAM} !important; }}
+[data-testid="stSidebar"] hr {{ border-color: rgba(245,234,217,0.14) !important; }}
+[data-testid="stSidebar"] .stButton > button {{
+    background: rgba(245,234,217,0.08) !important;
+    color: {CREAM} !important;
+    border: 1px solid rgba(245,234,217,0.20) !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
     font-size: 0.85rem !important;
-}
-[data-testid="stSidebar"] .stButton > button:hover {
-    background: rgba(6,182,212,0.2) !important;
-    border-color: #06B6D4 !important;
-    color: #67E8F9 !important;
-}
+}}
+[data-testid="stSidebar"] .stButton > button:hover {{
+    background: rgba(210,96,58,0.25) !important;
+    border-color: {ACCENT} !important;
+    color: #F4B9A0 !important;
+}}
 
-/* ── Main content buttons (cyan CTA) ── */
-.stButton > button {
-    background-color: #06B6D4 !important;
+/* ── Main content buttons (terracotta CTA) ── */
+.stButton > button {{
+    background-color: {ACCENT} !important;
     color: #FFFFFF !important;
     border: none !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-    transition: background-color 0.15s ease !important;
-}
-.stButton > button:hover { background-color: #0891B2 !important; color: #FFFFFF !important; }
-.stButton > button:focus { box-shadow: 0 0 0 2px rgba(6,182,212,0.35) !important; outline: none !important; }
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    transition: transform 0.12s ease, background-color 0.15s ease !important;
+}}
+.stButton > button *  {{ color: #FFFFFF !important; }}
+.stButton > button:hover {{ background-color: #B84F2E !important; transform: translateY(-1px); }}
+.stButton > button:focus {{ box-shadow: 0 0 0 3px rgba(210,96,58,0.25) !important; outline: none !important; }}
+[data-testid="stSidebar"] .stButton > button * {{ color: {CREAM} !important; }}
+
+/* ── Chat messages ── */
+[data-testid="stChatMessage"] {{
+    background: {CARD};
+    border: 1px solid rgba(43,36,32,0.07);
+    border-radius: 16px;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.6rem;
+    box-shadow: 0 1px 8px rgba(43,36,32,0.04);
+}}
+[data-testid="stChatInput"] textarea {{
+    background: {CARD} !important;
+    border-radius: 14px !important;
+}}
 
 /* ── Expander (source passages + suggested questions) ── */
-[data-testid="stExpander"] summary {
-    color: #06B6D4 !important;
-    font-weight: 600 !important;
+[data-testid="stExpander"] {{ background: {CARD}; border-radius: 12px; border-color: rgba(43,36,32,0.08) !important; }}
+[data-testid="stExpander"] summary {{
+    color: {ACCENT} !important;
+    font-weight: 700 !important;
     font-size: 0.88rem !important;
-}
-[data-testid="stExpander"] summary:hover { color: #0891B2 !important; }
+}}
+[data-testid="stExpander"] summary:hover {{ color: #B84F2E !important; }}
 
 /* ── FAQ panel ── */
-.faq-panel-header {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 0.5rem;
-}
-.faq-orange-bar {
-    width: 4px; height: 1.3rem;
-    background: #06B6D4; border-radius: 2px; flex-shrink: 0;
-}
-.faq-panel-title {
-    font-size: 0.85rem; font-weight: 700; color: #1A1A1A;
-    text-transform: uppercase; letter-spacing: 0.07em; margin: 0;
-}
-.faq-panel-sub { font-size: 0.79rem; color: #888; margin: 0 0 0.9rem 1rem; }
+.faq-panel-header {{ display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }}
+.faq-orange-bar {{ width: 5px; height: 1.3rem; background: {ACCENT}; border-radius: 3px; flex-shrink: 0; }}
+.faq-panel-title {{ font-family: 'Baloo 2', cursive; font-size: 1.0rem; font-weight: 700; color: {INK}; margin: 0; }}
+.faq-panel-sub {{ font-size: 0.82rem; color: {DIM}; margin: 0 0 0.9rem 1.1rem; }}
+div[data-testid="column"] .stButton > button {{
+    background: {CARD} !important;
+    color: {INK} !important;
+    border: 1px solid rgba(43,36,32,0.12) !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+    border-radius: 12px !important;
+}}
+div[data-testid="column"] .stButton > button *  {{ color: {INK} !important; }}
+div[data-testid="column"] .stButton > button:hover {{
+    background: #FBEADF !important;
+    border-color: {ACCENT} !important;
+    color: {INK} !important;
+    transform: none;
+}}
 
 /* ── Status badges ── */
-.badge-on  { background: #00A651; color: #fff; padding: 0.14rem 0.65rem;
-             border-radius: 12px; font-size: 0.69rem; font-weight: 700; letter-spacing: 0.05em; }
-.badge-off { background: #4E606E; color: #fff; padding: 0.14rem 0.65rem;
-             border-radius: 12px; font-size: 0.69rem; font-weight: 700; letter-spacing: 0.05em; }
+.badge-on  {{ background: #4C9A6A; color: #fff; padding: 0.18rem 0.75rem;
+             border-radius: 20px; font-size: 0.69rem; font-weight: 700; letter-spacing: 0.05em; }}
+.badge-off {{ background: #8A7A6B; color: #fff; padding: 0.18rem 0.75rem;
+             border-radius: 20px; font-size: 0.69rem; font-weight: 700; letter-spacing: 0.05em; }}
 
 /* ── Source cards ── */
-.src-meta { font-weight: 600; color: #06B6D4; font-size: 0.77rem; margin-bottom: 0.3rem; }
-.src-body { background: #ECFEFF; border: 1px solid #A5F3FC; border-radius: 8px;
-            padding: 0.75rem 1rem; font-size: 0.82rem; line-height: 1.65;
-            margin-bottom: 0.55rem; color: #333; }
+.src-meta {{ font-weight: 700; color: {ACCENT}; font-size: 0.77rem; margin-bottom: 0.3rem; }}
+.src-body {{ background: #FBF5EC; border: 1px solid rgba(210,96,58,0.25); border-radius: 12px;
+            padding: 0.85rem 1.1rem; font-size: 0.82rem; line-height: 1.65;
+            margin-bottom: 0.55rem; color: {INK}; }}
 
 /* ── Divider ── */
-.brand-divider { height: 1px; border: none;
-              background: linear-gradient(to right, #06B6D4, rgba(6,182,212,0.06));
-              margin: 1.25rem 0; }
+.brand-divider {{ height: 1px; border: none;
+              background: linear-gradient(to right, {ACCENT}, rgba(210,96,58,0.05));
+              margin: 1.25rem 0; }}
+
+::-webkit-scrollbar {{ width: 10px; height: 10px; }}
+::-webkit-scrollbar-track {{ background: {PAPER}; }}
+::-webkit-scrollbar-thumb {{ background: rgba(43,36,32,0.15); border-radius: 6px; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -148,9 +207,20 @@ def show_sources(sources: list[dict]) -> None:
             )
 
 
+DEFAULT_PDF_PATH = os.path.join(os.path.dirname(__file__), "data", "sample_handbook.pdf")
+DEFAULT_PDF_LABEL = "Sample Employee Handbook (preloaded demo)"
+
+
+@st.cache_resource(show_spinner=False)
+def _load_default_index():
+    from ingest import build_index
+    return build_index(DEFAULT_PDF_PATH)
+
+
 def reset_session() -> None:
     for key in ("index", "doc_name", "messages", "faqs", "faq_visible", "faq_pending"):
         st.session_state.pop(key, None)
+    st.session_state["skip_auto_load"] = True
 
 
 def _process_prompt(prompt: str, api_key: str) -> None:
@@ -158,8 +228,8 @@ def _process_prompt(prompt: str, api_key: str) -> None:
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
-    with st.chat_message("assistant"):
-        with st.spinner("Searching policy documents…"):
+    with st.chat_message("assistant", avatar="🐦"):
+        with st.spinner("Wren is looking that up…"):
             from retrieval import get_answer
             answer, sources = get_answer(st.session_state.index, prompt, api_key)
         st.markdown(answer)
@@ -171,16 +241,38 @@ def _process_prompt(prompt: str, api_key: str) -> None:
 
 # ── Session state ──────────────────────────────────────────────────────────────
 for k, v in [
-    ("index",       None),
-    ("doc_name",    None),
-    ("messages",    []),
-    ("faqs",        []),
-    ("faq_visible", True),
-    ("faq_pending", None),
+    ("index",          None),
+    ("doc_name",       None),
+    ("messages",       []),
+    ("faqs",           []),
+    ("faq_visible",    True),
+    ("faq_pending",    None),
+    ("skip_auto_load", False),
 ]:
     st.session_state.setdefault(k, v)
 
 api_key = get_api_key()
+
+# Preload a bundled sample handbook so any visitor gets a working demo
+# immediately — no upload required. Skipped once the user resets to bring
+# their own document.
+if (
+    st.session_state.index is None
+    and not st.session_state.skip_auto_load
+    and os.path.exists(DEFAULT_PDF_PATH)
+):
+    with st.spinner("Loading the sample employee handbook — first load takes 30–60s…"):
+        try:
+            st.session_state.index = _load_default_index()
+            st.session_state.doc_name = DEFAULT_PDF_LABEL
+            if api_key:
+                try:
+                    from retrieval import generate_faqs
+                    st.session_state.faqs = generate_faqs(st.session_state.index, api_key)
+                except Exception:
+                    st.session_state.faqs = []
+        except Exception:
+            pass  # fall through to the manual upload screen if the sample fails to load
 
 
 # ── Sidebar ────────────────────────────────────────────────────────────────────
@@ -189,7 +281,7 @@ with st.sidebar:
         f'<div style="padding:4px 0 10px;">{BRAND_LOGO_HTML}</div>',
         unsafe_allow_html=True,
     )
-    st.markdown("### AI HR Policy Assistant")
+    st.markdown("### Your handbook, on call")
     st.markdown("---")
 
     st.markdown("#### Document Status")
@@ -226,10 +318,10 @@ with st.sidebar:
 # ── Header ─────────────────────────────────────────────────────────────────────
 st.markdown(
     f'<div class="brand-header">'
-    f'  <div style="font-size:34px;">🧭</div>'
+    f'  <div class="brand-header-icon">🐦</div>'
     f'  <div class="brand-header-title">'
-    f'    <h1>Atlas Assist</h1>'
-    f'    <p>Ask your handbook anything — instant, grounded answers with cited sources, powered by RAG + Claude</p>'
+    f'    <h1>Wren</h1>'
+    f'    <p>Ask your handbook anything — grounded answers, cited sources, no waiting on HR.</p>'
     f'  </div>'
     f'</div>',
     unsafe_allow_html=True,
@@ -240,17 +332,16 @@ st.markdown(
 if st.session_state.index is None:
     _, col, _ = st.columns([1, 2, 1])
     with col:
-        st.markdown("### Load HR Handbook")
+        st.markdown("### Drop in a handbook")
         st.markdown(
-            "Upload your HR policy handbook as a PDF. "
-            "It will be chunked, embedded, and indexed so you can "
-            "ask any policy question in natural language."
+            "Upload your HR policy handbook as a PDF. Wren will read it, index it, "
+            "and be ready to answer any policy question in plain English."
         )
         uploaded = st.file_uploader("Choose PDF", type=["pdf"], label_visibility="collapsed")
 
         if uploaded:
             with st.spinner(
-                f"Indexing **{uploaded.name}** — first run downloads the embedding model "
+                f"Reading **{uploaded.name}** — first run downloads the embedding model "
                 "(~25 MB). Takes 30–60 s…"
             ):
                 from ingest import build_index
@@ -279,7 +370,7 @@ if st.session_state.index is None:
                     os.unlink(tmp_path)
 
             if st.session_state.index:
-                st.success("Document indexed! Ask a question or click a suggested one below.")
+                st.success("Handbook loaded! Ask a question or click one below.")
                 st.rerun()
 
 
@@ -294,7 +385,8 @@ else:
 
     # Render existing message history
     for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
+        avatar = "🐦" if msg["role"] == "assistant" else None
+        with st.chat_message(msg["role"], avatar=avatar):
             st.markdown(msg["content"])
             if msg["role"] == "assistant" and msg.get("sources"):
                 show_sources(msg["sources"])
@@ -309,7 +401,7 @@ else:
             st.markdown(
                 '<div class="faq-panel-header">'
                 '  <div class="faq-orange-bar"></div>'
-                '  <p class="faq-panel-title">Frequently Asked Questions</p>'
+                '  <p class="faq-panel-title">A few things people ask</p>'
                 '</div>'
                 '<p class="faq-panel-sub">Click any question for an instant answer</p>',
                 unsafe_allow_html=True,
@@ -323,7 +415,7 @@ else:
 
         elif has_messages:
             # Collapsible panel once conversation is underway
-            with st.expander("💡 Show suggested questions", expanded=False):
+            with st.expander("💬 Show suggested questions", expanded=False):
                 cols = st.columns(2)
                 for i, q in enumerate(faqs):
                     if cols[i % 2].button(q, key=f"faq_exp_{i}", use_container_width=True):

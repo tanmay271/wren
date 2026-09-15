@@ -21,9 +21,10 @@ ENV/
 # ChromaDB persistent data (not used, but guard anyway)
 chroma_db/
 
-# Uploaded PDFs — keep out of source control
+# Uploaded PDFs — keep out of source control (the bundled demo sample is allow-listed)
 data/*.pdf
 *.pdf
+!data/sample_handbook.pdf
 
 .claude/
 

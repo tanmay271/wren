@@ -1,25 +1,27 @@
-# Atlas Assist
+# Wren
 
-**Ask your HR handbook anything — get grounded, cited answers instantly.**
+**Ask your handbook anything.** Grounded answers, cited sources, no waiting on HR.
 
-Atlas Assist is a Retrieval-Augmented Generation (RAG) chatbot: upload any HR policy handbook as a PDF, and employees can ask plain-English questions about leave, benefits, conduct, or procedures and get answers pulled from — and cited to — the actual document, not a language model's general knowledge.
+Wren is a Retrieval-Augmented Generation (RAG) chatbot: it reads an HR policy handbook PDF and lets employees ask plain-English questions about leave, benefits, conduct, or procedures — getting answers pulled from, and cited to, the actual document, not a language model's general knowledge.
 
-**[Live demo →](#deployment)** &nbsp;·&nbsp; Built with LlamaIndex, ChromaDB, and Claude.
+**[Live demo →](#deployment)** &nbsp;·&nbsp; Built with LlamaIndex, ChromaDB, and Claude. Preloaded with a sample handbook — try it with zero setup.
 
-![Atlas Assist — chat with cited sources](assets/screenshot-chat-answer.png)
+![Wren — a grounded, cited answer](assets/screenshot-chat-answer.png)
 
 ## The problem
 
-Company handbooks are long, dense, and rarely read end-to-end. When an employee has a benefits or leave question, they either dig through a 60-page PDF, ping HR and wait, or guess. A keyword search over the PDF doesn't help much either — real questions ("how much notice do I need to give for parental leave?") rarely match the document's exact wording. Atlas Assist fixes this with semantic search plus an LLM that answers *only* from what's actually in the document, and shows its work.
+Company handbooks are long, dense, and rarely read end-to-end. When an employee has a benefits or leave question, they either dig through a 60-page PDF, ping HR and wait, or guess. A keyword search over the PDF doesn't help much either — real questions ("how much notice do I need to give for parental leave?") rarely match the document's exact wording. Wren fixes this with semantic search plus an LLM that answers *only* from what's actually in the document, and shows its work.
 
 ## Use case
 
-An employee uploads their company's HR handbook once. Atlas Assist chunks and embeds it, generates a set of realistic FAQ starter questions grounded in that specific document, and then answers any follow-up question conversationally — always citing the exact passages and page numbers it used, so the answer is auditable, not just plausible-sounding.
+The app comes preloaded with a sample employee handbook, so anyone opening the deployed demo lands directly in a working chat — no upload required. Wren also generates a set of realistic FAQ starter questions grounded in that specific document, and answers any follow-up conversationally, always citing the exact passages and page numbers it used, so the answer is auditable, not just plausible-sounding. Anyone can also reset and upload their own handbook to try it against a different document.
+
+![Wren — landing, preloaded and ready](assets/screenshot-landing.png)
 
 ## How it works
 
 ```
-PDF Upload
+PDF (preloaded, or uploaded by the user)
     │
     ▼
 LlamaIndex SimpleDirectoryReader   — parses PDF into text nodes
@@ -52,6 +54,8 @@ Answer + source passages shown in the UI
 | Frontend | Streamlit |
 | PDF parsing | `pypdf` via `llama-index-readers-file` |
 
+The sample handbook's index is built once per running server (`st.cache_resource`), so after the first visitor pays the one-time embedding cost, every subsequent visitor gets an instant, ready-to-use chat.
+
 ## Running locally
 
 ```bash
@@ -65,7 +69,7 @@ cp .env.example .env   # then add your ANTHROPIC_API_KEY
 streamlit run app.py
 ```
 
-Open `http://localhost:8502`, upload any PDF handbook (a sample is in `data/test_hr.pdf`), and start asking questions. Get an API key at [console.anthropic.com](https://console.anthropic.com/).
+Open `http://localhost:8502` — the sample handbook loads automatically. Use the sidebar's **Reset / Load New Document** to try your own PDF instead. Get an API key at [console.anthropic.com](https://console.anthropic.com/).
 
 ## Deployment
 
@@ -74,17 +78,18 @@ This is a Python/Streamlit app, so it can't be hosted on GitHub Pages (static fi
 1. Push this repo to GitHub.
 2. Go to [share.streamlit.io](https://share.streamlit.io) → **New app** → select this repo, branch `main`, file `app.py`.
 3. Under **Settings → Secrets**, add `ANTHROPIC_API_KEY = "sk-ant-..."`.
-4. Deploy — you'll get a public `*.streamlit.app` URL.
+4. Deploy — you'll get a public `*.streamlit.app` URL, preloaded and ready for any visitor.
 
 ## Project structure
 
 ```
 gf-hr-bot/
-├── app.py                      # Streamlit UI — upload, chat, source display
+├── app.py                      # Streamlit UI — preload, chat, source display
 ├── ingest.py                   # PDF loading, chunking, embedding, ChromaDB indexing
 ├── retrieval.py                # RAG query engine + Claude answer generation
 ├── assets/                     # Screenshots used in this README
-├── data/                       # Sample HR PDF for testing (uploads aren't committed)
+├── data/
+│   └── sample_handbook.pdf     # Bundled demo document (uploads aren't committed)
 ├── requirements.txt
 ├── .env.example
 └── .streamlit/config.toml      # Theme + server config
