@@ -1,20 +1,26 @@
+# Versions pinned exactly to what's been tested end-to-end (locally and via
+# Claude API calls). Wren's "Empty Response" bug in production was caused by
+# an unpinned `anthropic>=` resolving to a newer major SDK version (1.x) that
+# llama-index-llms-anthropic couldn't parse responses from correctly — pin
+# everything to avoid that class of bug recurring on a future rebuild.
+
 # Core
-anthropic>=0.25.0
-streamlit>=1.32.0
-python-dotenv>=1.0.0
+anthropic==0.102.0
+streamlit==1.57.0
+python-dotenv==1.2.2
 
 # LlamaIndex — core + integrations
-llama-index-core>=0.10.0
-llama-index-vector-stores-chroma>=0.1.0
-llama-index-llms-anthropic>=0.1.0
-llama-index-embeddings-huggingface>=0.1.0
-llama-index-readers-file>=0.1.0
+llama-index-core==0.14.22
+llama-index-vector-stores-chroma==0.5.5
+llama-index-llms-anthropic==0.11.4
+llama-index-embeddings-huggingface==0.7.0
+llama-index-readers-file==0.6.0
 
 # Vector store
-chromadb>=0.4.22
+chromadb==1.5.9
 
 # Embeddings
-sentence-transformers>=2.2.0
+sentence-transformers==5.5.0
 
 # PDF parsing
-pypdf>=3.0.0
+pypdf==6.11.0
