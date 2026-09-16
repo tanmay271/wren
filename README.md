@@ -66,10 +66,10 @@ python -m venv .venv
 pip install -r requirements.txt
 cp .env.example .env   # then add your ANTHROPIC_API_KEY
 
-streamlit run app.py
+streamlit run app.py --server.port 8502   # or omit the flag to use Streamlit's default port
 ```
 
-Open `http://localhost:8502` — the sample handbook loads automatically. Use the sidebar's **Reset / Load New Document** to try your own PDF instead. Get an API key at [console.anthropic.com](https://console.anthropic.com/).
+Open the URL Streamlit prints (defaults to `http://localhost:8501` if you don't pass `--server.port`) — the sample handbook loads automatically. Use the sidebar's **Reset / Load New Document** to try your own PDF instead. Get an API key at [console.anthropic.com](https://console.anthropic.com/).
 
 ## Deployment
 
