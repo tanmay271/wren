@@ -190,6 +190,14 @@ def get_api_key() -> str:
         return os.getenv("ANTHROPIC_API_KEY", "")
 
 
+def get_workspace_id() -> str:
+    """Optional. Only needed if your API key is org-scoped rather than workspace-scoped."""
+    try:
+        return st.secrets["ANTHROPIC_WORKSPACE_ID"]
+    except Exception:
+        return os.getenv("ANTHROPIC_WORKSPACE_ID", "")
+
+
 def show_sources(sources: list[dict]) -> None:
     if not sources:
         return
@@ -231,7 +239,7 @@ def _process_prompt(prompt: str, api_key: str) -> None:
     with st.chat_message("assistant", avatar="🐦"):
         with st.spinner("Wren is looking that up…"):
             from retrieval import get_answer
-            answer, sources = get_answer(st.session_state.index, prompt, api_key)
+            answer, sources = get_answer(st.session_state.index, prompt, api_key, get_workspace_id())
         st.markdown(answer)
         show_sources(sources)
     st.session_state.messages.append(
@@ -268,7 +276,7 @@ if (
             if api_key:
                 try:
                     from retrieval import generate_faqs
-                    st.session_state.faqs = generate_faqs(st.session_state.index, api_key)
+                    st.session_state.faqs = generate_faqs(st.session_state.index, api_key, get_workspace_id())
                 except Exception:
                     st.session_state.faqs = []
         except Exception:
@@ -360,7 +368,7 @@ if st.session_state.index is None:
                     if api_key:
                         try:
                             from retrieval import generate_faqs
-                            st.session_state.faqs = generate_faqs(idx, api_key)
+                            st.session_state.faqs = generate_faqs(idx, api_key, get_workspace_id())
                         except Exception:
                             st.session_state.faqs = []
 

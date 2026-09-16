@@ -22,12 +22,14 @@ def get_answer(
     index: VectorStoreIndex,
     query: str,
     api_key: str,
+    workspace_id: str = "",
 ) -> tuple[str, list[dict]]:
     """Query the index and return (answer_text, source_chunks)."""
     llm = AnthropicLLM(
         model="claude-sonnet-4-6",
         api_key=api_key,
         max_tokens=1024,
+        default_headers={"anthropic-workspace-id": workspace_id} if workspace_id else None,
     )
     engine = index.as_query_engine(
         llm=llm,
@@ -50,7 +52,7 @@ def get_answer(
     return str(response), sources
 
 
-def generate_faqs(index: VectorStoreIndex, api_key: str) -> list[str]:
+def generate_faqs(index: VectorStoreIndex, api_key: str, workspace_id: str = "") -> list[str]:
     """Analyze indexed document and return 8-9 employee-specific FAQ questions."""
     nodes = list(index.storage_context.docstore.docs.values())
     if not nodes:
@@ -71,7 +73,10 @@ def generate_faqs(index: VectorStoreIndex, api_key: str) -> list[str]:
 
     sample_text = "\n\n---\n\n".join(samples)
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client = anthropic.Anthropic(
+        api_key=api_key,
+        default_headers={"anthropic-workspace-id": workspace_id} if workspace_id else None,
+    )
     msg = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=600,
